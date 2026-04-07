@@ -1,0 +1,397 @@
+@media only screen and (min-width: 1201px) and (max-width: 3840px) {
+    .sidebar-md {
+        display: none;
+    }
+
+    .page-topbar .navbar-header {
+        justify-content: flex-end;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .sidebar-md {
+        display: none;
+    }
+
+    .page-topbar .navbar-header {
+        justify-content: flex-end;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+
+    #cartview .card .desktop-card-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 92vh;
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 991px) {
+    .sidebar-lg {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+    .sidebar-lg {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 576px) {
+    .sidebar-lg {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    /*========= pos css =========*/
+
+    .card-body .search-button {
+        padding: 10px 15px;
+    }
+
+    .card-body .pos-card-input {
+        padding: 0px 12px;
+    }
+
+    /*========= pos css =========*/
+
+}
+
+@media only screen and (min-width: 200px) and (max-width: 374px) {
+
+    .page-content {
+        padding: 12px !important;
+        padding-bottom: 100px !important;
+    }
+
+    .subtitle {
+        line-height: 20px;
+        font-size: 14px;
+    }
+
+    .sidebar-lg {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    /*========= pos css =========*/
+
+    .card-body .search-button {
+        padding: 10px 15px;
+    }
+
+    .card-body .pos-card-input {
+        padding: 0px 12px;
+    }
+
+    /*========= pos css =========*/
+}
+
+/* New login form */
+
+/* New login form  start */
+
+@media (max-width:1024px) {
+    .card-box {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+/* New login form  start */
+@media (max-width:576px) {
+
+    .bg-new {
+        background: conic-gradient(from 45deg, var(--bs-secondary), var(--bs-primary));
+    }
+
+    .offcanvas-body .card-title {
+        font-size: 16px;
+    }
+
+    .theme-label-name {
+        font-size: 14px;
+    }
+
+    .theme-label {
+        padding: 2px 20px;
+        right: -44px;
+    }
+
+    .paln-img {
+        display: none;
+    }
+
+    .card-box {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .pos-header img {
+        width: 125px;
+    }
+}
+
+@media (max-width:992px) {
+
+    .main-content-rtl {
+        margin-right: 0rem !important;
+    }
+
+    .pos-menu {
+        overflow: auto !important;
+        overflow-x: hidden !important;
+        height: 63vh !important;
+    }
+
+}
+
+@media (max-width:1140px) {
+    .righ-side {
+        width: 33%;
+    }
+}
+
+@media (max-width:1440px) {
+    .pos-menu {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 65vh;
+        padding: 0px 10px;
+    }
+}
+
+@media only screen and (max-width: 1440px) and (min-width: 768px) {
+
+    .login-forgot-padding,
+    .register-padding {
+        padding: 48px;
+    }
+}
+
+@media only screen and (max-width: 992px) and (min-width: 1200px) {
+    .login-forgot-padding {
+        padding: 32px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 576px) {
+    .login-forgot-padding {
+        padding: 32px;
+    }
+
+    .register-padding {
+        padding: 32px;
+    }
+}
+
+@media only screen and (max-width: 576px) and (min-width: 375px) {
+
+    .login-forgot-padding {
+        padding: 32px;
+    }
+
+    .register-padding {
+        padding: 32px;
+    }
+}
+
+@media only screen and (max-width: 374px) and (min-width: 200px) {
+    .login-forgot-padding {
+        padding: 32px;
+    }
+
+    .register-padding {
+        padding: 32px;
+    }
+
+    audio {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 375px) and (min-width: 200px) {
+    audio {
+        width: 100%;
+    }
+}
+
+
+/* ============================ pos Dhruvil desai Add =================================== */
+
+@media screen and (min-device-width: 376px) and (max-device-width: 420px) {
+    .sidebares {
+        top: 65px;
+        left: 0;
+        width: 100%;
+        border-right: 0px solid var(--bs-secondary);
+        border-bottom: 1px solid var(--bs-secondary) !important;
+        padding: 10px 5px !important;
+    }
+
+    .imgs {
+        height: 140px;
+    }
+}
+
+@media screen and (min-device-width: 200px) and (max-device-width: 375px) {
+    .imgs {
+        height: 140px;
+    }
+}
+
+@media screen and (min-device-width: 576px) and (max-device-width: 767px) {
+    .sidebares {
+        top: 62px;
+        left: 0;
+        width: 100%;
+        border-right: 0px solid var(--bs-secondary);
+        border-bottom: 1px solid var(--bs-secondary) !important;
+        padding: 10px 10px !important;
+    }
+
+    .imgs {
+        height: 160px;
+    }
+}
+
+@media screen and (min-device-width: 425px) and (max-device-width: 768px) {
+    .imgs {
+        height: 160px;
+    }
+}
+
+@media screen and (min-device-width: 421px) and (max-device-width: 424px) {
+    .imgs {
+        height: 160px;
+    }
+}
+
+@media screen and (min-device-width: 200px) and (max-device-width: 576px) {
+    .btn-search {
+        width: 30px;
+    }
+
+    .offcanvas {
+        width: 95% !important;
+    }
+
+    .total-pay1 {
+        width: 100%;
+    }
+
+    .sidebares {
+        top: 62px;
+        left: 0;
+        width: 100%;
+        border-right: 0px solid var(--bs-secondary);
+        border-bottom: 1px solid var(--bs-secondary) !important;
+        padding: 10px 10px !important;
+    }
+}
+
+@media screen and (min-device-width: 200px) and (max-device-width: 767px) {
+    .main-product {
+        margin-top: 130px;
+        margin-left: 0px;
+    }
+
+    .logo-size {
+        height: 35px;
+    }
+
+    .sidebr-box {
+        width: 100px;
+        height: 100px;
+        margin: 0px;
+    }
+
+}
+
+
+@media screen and (min-device-width: 992px) and (max-device-width: 1199px) {
+    .main-product {
+        margin-left: 130px;
+    }
+}
+
+@media screen and (min-device-width: 1920px) and (max-device-width: 2560px) {
+    .main-product {
+        margin-left: 130px;
+    }
+
+    .sidebr-box {
+        width: 110px !important;
+        height: 110px !important;
+    }
+}
+
+@media screen and (min-device-width: 1680px) and (max-device-width: 1920px) {
+    .main-product {
+        margin-left: 140px;
+    }
+
+    .sidebr-box {
+        width: 110px !important;
+        height: 110px !important;
+    }
+}
+
+@media screen and (min-device-width: 1440px) and (max-device-width: 1680px) {
+    .main-product {
+        margin-left: 120px;
+    }
+}
+
+@media screen and (min-device-width: 1260px) and (max-device-width: 1440px) {
+    .main-product {
+        margin-left: 125px;
+    }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    .main-product {
+        margin-left: 120px;
+    }
+}
+
+@media screen and (min-device-width: 767px) and (max-device-width: 768px) {
+    .main-product {
+        margin-left: 115px;
+    }
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1399px) {
+    .sidebares {
+        border-right: 1px solid var(--bs-secondary);
+    }
+
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 2560px) {
+    .sidebares {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        overflow-y: scroll;
+        height: 100%;
+        border-right: 1px solid var(--bs-secondary);
+        padding: 90px 5px !important;
+    }
+}

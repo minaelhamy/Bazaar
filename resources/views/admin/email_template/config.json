@@ -1,0 +1,32 @@
+{
+    "name": "Email Notification",
+    "unique_identifier": "email_settings",
+    "version": "3.7",
+    "addon_banner": "email_settings.jpg",
+    "minimum_item_version": "3.7",
+    "type": "2",
+    "directory": "",
+    "sql_file": "",
+    "files": [
+        {
+            "root_directory": "addons/email_setting/Controllers/addons/EmailSettingsController.php",
+            "update_directory": "app/Http/Controllers/addons/EmailSettingsController.php"
+        },
+        {
+            "root_directory": "addons/email_setting/routes/emailsettings.php",
+            "update_directory": "routes/emailsettings.php"
+        },
+        {
+            "root_directory": "addons/email_setting/views/admin/emailsettings/email_setting.blade.php",
+            "update_directory": "resources/views/admin/emailsettings/email_setting.blade.php"
+        },
+        {
+            "root_directory": "addons/email_setting/views/admin/email_template/setting_form.blade.php",
+            "update_directory": "resources/views/admin/email_template/setting_form.blade.php"
+        },
+        {
+            "root_directory": "addons/email_setting/assets/email_settings.jpg",
+            "update_directory": "storage/app/public/addons/email_settings.jpg"
+        }
+    ]
+}

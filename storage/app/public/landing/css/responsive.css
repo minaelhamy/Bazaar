@@ -1,0 +1,672 @@
+/*-------------------------------------max-width:1440px--start-------------------------------------------*/
+
+@media (max-width: 1440px) {
+
+    .contact-form,
+    .col-md-5 {
+        flex: 0 0 auto;
+        width: 40.676670%;
+    }
+
+    .bg-color-banner {
+        background-color: var(--primary-color);
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/*-------------------------------------max-width:1440px--End----------------------------------------------*/
+/*-------------------------------------max-width:1152px--start--------------------------------------------*/
+
+@media (max-width:1152px) {
+    .d-button-block {
+        display: block !important;
+    }
+}
+
+/*-------------------------------------max-width:1152px--End---------------------------------------------*/
+/*-------------------------------------min-width:1152px--start-------------------------------------------*/
+@media (min-width: 1152px) {
+    /*rtl menu-end */
+    .project-management-text h5 {
+        font-size: 70px;
+    }
+}
+
+
+@media (min-width: 1152px) {
+
+    .navbar-nav .nav-item .active::before {
+        content: ".";
+        width: auto;
+        height: 5px;
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 35px;
+    }
+
+    .nav-link.active {
+        color: var(--secondary-color) !important;
+    }
+}
+
+/*-------------------------------------min-width:1152px--End---------------------------------------------*/
+/*-------------------------------------max-width:1152px--start-------------------------------------------*/
+@media (max-width: 1152px) {
+
+    .bg-gray {
+        height: 100vh;
+        width: 100%;
+        background-color: rgba(128, 128, 128, 0.313);
+        transition: 2s;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 50;
+    }
+
+    /*---------------------------------banner-strat--------------------------------------------------*/
+    .banner-text h5 {
+        width: 500px;
+    }
+
+    .banner-text p {
+        width: 520px;
+    }
+
+    /*----Use-as-Extension-start----*/
+
+    .use-extension {
+        font-size: 32px !important;
+    }
+
+    /*----Use-as-Extension-End----*/
+    .sponsors-title {
+        font-size: 60px;
+    }
+
+    .client-slaider {
+        width: 100% !important;
+    }
+
+    .carousel-client-slaider h5 {
+        text-align: center;
+        font-size: 42px;
+    }
+
+    .carousel-client-slaider p {
+        text-align: center;
+        padding: 0px 0px 20px 0px;
+    }
+
+    .have-project-title {
+        font-size: 50px;
+    }
+
+    .language-button {
+        display: block !important;
+    }
+
+    .menu-list-1152px-none {
+        margin: 60px 0px 0px 0px !important;
+    }
+
+}
+
+/*-------------------------------------max-width:1152px--End-------------------------------------------*/
+/*-------------------------------------max-width:1024px--start------------------------------------------*/
+
+@media (max-width: 1024px) {
+
+    .banner-text h1 {
+        font-size: 50px;
+    }
+
+    .project-management-text h5 {
+        font-size: 22px !important;
+    }
+
+    .work-title .line-image {
+        width: 100%;
+    }
+
+    .client-slaider-container {
+        padding: 0px 0px 75px 0px;
+    }
+    
+    /*======= how it work  jenish css ====== */
+    .project-management-text {
+        padding-top: 30px;
+    }
+}
+
+/*-------------------------------------max-width:1024px--End--------------------------------------------------*/
+
+
+/*-------------------------------------max-width:768px--start--------------------------------------------------*/
+@media (max-width:768px) {
+
+    .banner-text h1 {
+        font-size: 36px;
+    }
+
+    .banner-page {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        height: 100% !important;
+        /* padding-bottom: 50px; */
+    }
+
+    .banner-text h5 {
+        width: 100%;
+    }
+
+    .banner-text p {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .banner-images {
+        display: none;
+    }
+
+    .project-management-text {
+        display: block;
+        width: 100%;
+    }
+
+    .project-management-text h5 {
+        width: 100%;
+        font-size: 54px;
+    }
+
+    .work-title .line-image {
+        position: absolute;
+        bottom: -13px;
+        left: 12px;
+        width: 100%;
+    }
+
+    .work-step-two {
+        float: none !important;
+    }
+
+    .header-btn-try {
+        margin: auto;
+        text-align: center;
+        display: block;
+    }
+
+    .project-management-bg-imag {
+        top: -20px;
+        left: -150px;
+    }
+
+    .management-image-2 {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        text-align: center;
+    }
+
+    .together-img {
+        padding-bottom: 40px;
+    }
+
+    .clients-card-body-1 {
+        display: none;
+    }
+
+    .clients-card-body-2 {
+        display: block !important;
+    }
+
+    .card-2-title {
+        font-family: var(--font-family-poppins);
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .card-2-name {
+        font-family: var(--font-family-poppins);
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    .card-2-img {
+        height: 20px;
+    }
+
+    .contact-main {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .main-text-title {
+        width: 100%;
+    }
+
+    .contact-form {
+        padding-top: 40px;
+        width: 100%;
+    }
+
+    .have-project-title {
+        text-align: center;
+        padding-top: 24px;
+    }
+
+    .have-project-subtitle {
+        text-align: center;
+        margin: auto;
+    }
+
+    .banner {
+        padding-top: 40px;
+    }
+
+    .sub-title-mein {
+        font-size: 14px !important;
+    }
+
+    .contact-bg-color {
+        padding: 20px 0px 10px 0px;
+    }
+
+    .project-management-image {
+        width: 65%;
+    }
+
+    .infogolio-email a {
+        font-size: 16px;
+    }
+
+    .infogolio-email {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+
+    .work-together-content {
+        text-align: center;
+    }
+
+    .store-img-box {
+        justify-content: center;
+    }
+
+    .recent-blogs-titel {
+        font-size: 50px;
+        text-align: center;
+    }
+
+    .rattings-tar {
+        justify-content: center;
+        margin: auto;
+    }
+}
+
+/*-------------------------------------max-width:768px--End----------------------------------------------------*/
+/*-------------------------------------max-width:576px--start----------------------------------------------------*/
+@media (max-width:576px) {
+    .project-management-text h5 {
+        font-size: 18px !important;
+    }
+
+    .management-image-2 {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        text-align: center;
+    }
+
+    .use-extension {
+        font-size: 32px !important;
+        text-align: center;
+    }
+
+    .choose-plan-title {
+        font-size: 57px;
+    }
+
+    .plan-card-body {
+        padding: 20px;
+    }
+
+    .choose-plan-title {
+        font-size: 50px;
+    }
+
+    .sponsors-title {
+        font-size: 45px;
+    }
+
+    .favorite-title {
+        text-align: center !important;
+        margin: auto;
+        font-size: 36px;
+        padding-top: 60px;
+    }
+
+    .clients-card-body-1 {
+        display: block;
+    }
+
+    .clients-card-body-2 {
+        display: none !important;
+    }
+
+    .what-our-clients-says-title {
+        font-size: 32px;
+    }
+
+    .beautiful-ui-kit-title {
+        font-size: 32px;
+        width: 100%;
+    }
+
+    .footer-contain {
+        display: block !important;
+        /* text-align: center; */
+    }
+
+    .js-nnum {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .js-number i {
+        font-size: 42px !important;
+    }
+
+    .js-main-card {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        width: 100%;
+    }
+
+    .banner-images {
+        height: 300px;
+        margin-top: 40px;
+    }
+
+    .blog-details-title {
+        font-size: 25px;
+    }
+
+    .email-icon-text-box-2 {
+        display: block !important;
+    }
+
+    .hotel-input {
+        box-shadow: none !important;
+    }
+
+    .hotel-input-1 {
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    }
+
+    .hotel-input-2 {
+        margin-top: 40px !important;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+
+    .label-border {
+        border-right: none !important;
+    }
+
+    .project-management {
+        padding-bottom: 0px !important;
+    }
+
+    .project-management-image {
+        width: 100%;
+    }
+
+    .footer-icon-1 {
+        display: block !important;
+    }
+
+    .copy-right-text {
+        text-align: center;
+    }
+
+    .footer-icon-bottom {
+        display: none !important;
+    }
+
+    .language-button-icon {
+        display: block !important;
+    }
+
+    .language-button {
+        display: none !important;
+    }
+
+    .button-top-arrow-up {
+        right: 20px;
+    }
+
+    .button-top-arrow-up-rtl {
+        left: 20px;
+    }
+
+    /* ====== testimonial css -- jenish ===== */
+    .carousel-client-slaider p {
+        padding: 0px 0px 20px 0px;
+    }
+
+    .client-slaider-container {
+        padding: 0px 0px 0px 0px;
+    }
+}
+
+/*-------------------------------------max-width:576px--End------------------------------------------------------*/
+/*-------------------------------------max-width:425px--Start----------------------------------------------------*/
+
+@media (max-width:425px) {
+
+    #footersidebar{
+        width: 95% !important;
+    }
+
+    .header .Navbar .logo img {
+        width: 160px !important;
+        height: auto !important;
+    }
+
+    .choose-plan-title {
+        font-size: 28px;
+    }
+
+    .clients-card-body-1 {
+        padding: 20px;
+    }
+
+    .input-btn button {
+        font-size: 11px;
+    }
+
+    .faq-title {
+        font-size: 34px;
+    }
+
+    .contact-title {
+        font-size: 28px;
+        line-height: 36px;
+    }
+
+    .contact-line-with {
+        justify-content: center;
+    }
+
+    .contact-icon {
+        justify-content: center;
+    }
+
+    .email-icon-text-box-2 {
+        display: block;
+        width: 100%;
+    }
+
+    .have-project-title {
+        font-size: 28px;
+    }
+
+    .about-us-mini-title {
+        font-size: 25px;
+    }
+
+    .form-email-buttom {
+        display: block !important;
+        text-align: center;
+        margin: auto;
+    }
+
+    .title-restaurant h5 {
+        font-size: 28px;
+    }
+
+    .what-our-clients-says-title {
+        font-size: 28px;
+    }
+
+    .beautiful-ui-kit-title {
+        font-size: 28px;
+    }
+
+    .use-extension {
+        font-size: 28px !important;
+    }
+
+    .funfact-title {
+        font-size: 42px;
+    }
+
+    /* jenish css */
+    .btn-border-dark:hover,
+    .btn-border-white:hover,
+    .btn-border-primary:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-border-dark,
+    .btn-border-white,
+    .btn-primary,
+    .btn-light,
+    .btn-secondary {
+        padding: 9px 24px;
+    }
+
+    .store-input {
+        padding: 9px 10px !important;
+    }
+
+    .button-top-arrow-up {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .button-top-arrow-up i {
+        font-size: 16px;
+    }
+
+    .project-img {
+        width: 230px;
+    }
+
+    .latest-blog {
+        font-size: 28px;
+    }
+
+    .carousel-client-slaider h5 {
+        font-size: 28px;
+    }
+
+    .hotel-main-title {
+        font-size: 28px;
+    }
+
+    /* prise plans */
+    .plan-card-frist-titel {
+        font-family: var(--font-family);
+        font-weight: 600;
+        font-size: 22px;
+    }
+
+    /* testimonial */
+    .client-slai button.owl-prev,
+    .client-slai button.owl-next {
+        width: 40px;
+        height: 40px;
+    }
+
+}
+
+/*-------------------------------------max-width:425px--End----------------------------------------------------*/
+
+/*-------------------------------------max-width:375px--Start----------------------------------------------------*/
+@media (max-width:375px) {
+
+    /*---------banner-start--------*/
+    .banner-text h1 {
+        font-size: 30px;
+    }
+
+    .choose-plan-title {
+        font-size: 28px;
+    }
+
+    .contact-title {
+        line-height: 36px;
+        font-size: 28px;
+    }
+
+    .hotel-main-title {
+        font-size: 28px;
+    }
+}
+
+/*--------------------------------------max-width:375px--End-----------------------------------------------------*/
+/*-------------------------------------max-width:320px--Start----------------------------------------------------*/
+@media (max-width:320px) {
+
+    .avater-img {
+        display: block !important;
+    }
+
+    .client-name,
+    .client-diteils {
+        font-size: 22px;
+        margin-top: 10px;
+        padding: 0px !important;
+    }
+
+    .client-diteils {
+        font-size: 16px !important;
+    }
+
+    .carousel-client-slaider h5 {
+        font-size: 28px;
+    }
+
+    .latest-blog {
+        font-size: 28px;
+    }
+
+    .recent-blogs-titel {
+        font-size: 40px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .g-recaptcha {
+        transform:scale(0.77);
+        transform-origin:0 0;
+    }
+}
+/*--------------------------------------max-width:320px--End-----------------------------------------------------*/
