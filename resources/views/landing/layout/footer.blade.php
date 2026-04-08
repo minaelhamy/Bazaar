@@ -18,7 +18,7 @@
                             <img src="" id="footerlogoimage" height="50" alt="">
                         </a>
                         <p class="footer-contain mt-4 fs-6 text-white col-lg-10">
-                            {{ trans('landing.footer_description') }}
+                            {{ helper::appdata('')->description ?: trans('landing.footer_description') }}
                         </p>
                     </div>
                 </div>

@@ -247,6 +247,11 @@
                                                     value="{{ @$settingdata->copyright }}"
                                                     placeholder="{{ trans('labels.copyright') }}">
                                             </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Footer Description</label>
+                                                <textarea class="form-control" name="footer_description" rows="4"
+                                                    placeholder="Enter the landing page footer description">{{ @$settingdata->description }}</textarea>
+                                            </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label">{{ trans('labels.logo') }}</label>
                                                 <input type="file" class="form-control" name="logo">

@@ -7,7 +7,7 @@ deployment:
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/cache/data
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/logs
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/bootstrap/cache
-    - /bin/rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --exclude '.git' --exclude '.github' --exclude '.cpanel.yml' --exclude '.env' --exclude '.env.local' --exclude '.env.production' --exclude 'node_modules/' --exclude 'vendor/' --exclude 'error_log' --exclude 'php/error_log' ./ /home/hatchwan/bazaar.hatchers.ai/
+    - /bin/rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --exclude '.git' --exclude '.github' --exclude '.cpanel.yml' --exclude '.env' --exclude '.env.local' --exclude '.env.production' --exclude 'node_modules/' --exclude 'vendor/' --exclude 'storage/app/public/admin-assets/' --exclude 'storage/app/public/item/' --exclude 'error_log' --exclude 'php/error_log' ./ /home/hatchwan/bazaar.hatchers.ai/
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/sessions
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/views
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/cache/data

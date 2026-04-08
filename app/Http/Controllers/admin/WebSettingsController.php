@@ -136,6 +136,7 @@ class WebSettingsController extends Controller
             $settingdata->website_title = $request->website_title;
             $settingdata->landing_page =  isset($request->landing) ? 1 : 2;
             $settingdata->copyright = $request->copyright;
+            $settingdata->description = $request->footer_description;
             $settingdata->template = !empty($request->template) ? $request->template : 1;
             $settingdata->save();
             return redirect()->back()->with('success', trans('messages.success'));
