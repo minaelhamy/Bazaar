@@ -58,7 +58,6 @@ Route::post('/generate-text', [SEOController::class, 'generateText']);
 Route::post('/generate-image', [SEOController::class, 'generateImage']);
 
 
-Route::get('/', [AdminController::class, 'login']);
 Route::post('add-on/session/save', [AdminController::class, 'sessionsave']);
 Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'login']);
