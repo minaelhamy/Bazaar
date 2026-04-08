@@ -2,4 +2,18 @@
 deployment:
   tasks:
     - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/sessions
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/views
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/cache/data
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/logs
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/bootstrap/cache
     - /bin/rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --exclude '.git' --exclude '.github' --exclude '.cpanel.yml' --exclude '.env' --exclude '.env.local' --exclude '.env.production' --exclude 'node_modules/' --exclude 'vendor/' --exclude 'error_log' --exclude 'php/error_log' ./ /home/hatchwan/bazaar.hatchers.ai/
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/sessions
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/views
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/framework/cache/data
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/storage/logs
+    - /bin/mkdir -p /home/hatchwan/bazaar.hatchers.ai/bootstrap/cache
+    - /bin/chmod -R 775 /home/hatchwan/bazaar.hatchers.ai/storage /home/hatchwan/bazaar.hatchers.ai/bootstrap/cache
+    - /usr/local/bin/php /home/hatchwan/bazaar.hatchers.ai/artisan config:clear
+    - /usr/local/bin/php /home/hatchwan/bazaar.hatchers.ai/artisan cache:clear
+    - /usr/local/bin/php /home/hatchwan/bazaar.hatchers.ai/artisan route:clear
