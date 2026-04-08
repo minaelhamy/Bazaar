@@ -26,7 +26,7 @@
     "contact_section_description_two"=>"Feel free to fill out our Contact Form and we'll get back to you as soon as possible.",
     "faq_section_title"=>"Frequently Asked Questions",
     "faq_section_description"=>"Lorem Ipsum has been the industry dummy text of the printing and typesetting industry dummy text of the printing and typesetting industry.",
-    "footer_description"=>"Storemart is a cutting-edge SaaS platform revolutionizing online selling. With a user-friendly interface and powerful backend tools, Storemart empowers businesses to effortlessly showcase and sell their products online. From inventory management to order fulfillment, Storemart streamlines the entire e-commerce process, enabling businesses to focus on growth",
+    "footer_description"=>"Made to empower people to build their own legacy",
     "get_started"=>"Get Started",
     "view_all"=>"View all",
     "read_more"=>"Read More",
