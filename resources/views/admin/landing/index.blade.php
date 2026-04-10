@@ -297,17 +297,22 @@
                                                 @php
                                                     $availableThemes = @helper::availablePlanThemes('template-');
                                                     $themes = [];
+                                                    $transactionThemeIds = !empty(@$theme->themes_id) && @$theme->themes_id !== '0'
+                                                        ? array_map('strval', explode('|', @$theme->themes_id))
+                                                        : [];
+                                                    $planThemeIds = !empty(@$currentPlan->themes_id) && @$currentPlan->themes_id !== '0'
+                                                        ? array_map('strval', explode('|', @$currentPlan->themes_id))
+                                                        : [];
                                                     if ($user->allow_without_subscription == 1) {
                                                         $themes = $availableThemes;
                                                     } else {
                                                         if (@helper::checkaddons('subscription')) {
-                                                            if (empty($theme)) {
-                                                                $themes = [!empty($settingdata->template) ? (string) $settingdata->template : '1'];
+                                                            if (!empty($transactionThemeIds)) {
+                                                                $themes = array_values(array_intersect($availableThemes, $transactionThemeIds));
+                                                            } elseif (!empty($planThemeIds)) {
+                                                                $themes = array_values(array_intersect($availableThemes, $planThemeIds));
                                                             } else {
-                                                                $themes = array_values(array_intersect(
-                                                                    $availableThemes,
-                                                                    array_map('strval', explode('|', @$theme->themes_id)),
-                                                                ));
+                                                                $themes = [!empty($settingdata->template) ? (string) $settingdata->template : '1'];
                                                             }
                                                         } else {
                                                             $themes = $availableThemes;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings;
 use App\Models\AppSettings;
+use App\Models\PricingPlan;
 use App\Models\Transaction;
 use App\Helpers\helper;
 use App\Models\SocialLinks;
@@ -27,13 +28,14 @@ class WebSettingsController extends Controller
         }
         $settingdata =  Settings::where('vendor_id', $vendor_id)->first();
         $othersettingdata = OtherSettings::where('vendor_id', $vendor_id)->first();
-        $theme = Transaction::select('themes_id')->where('vendor_id', $vendor_id)->orderByDesc('id')->first();
+        $theme = Transaction::select('themes_id', 'plan_id')->where('vendor_id', $vendor_id)->orderByDesc('id')->first();
+        $currentPlan = PricingPlan::select('id', 'themes_id')->where('id', Auth::user()->plan_id)->first();
         $app = AppSettings::where('vendor_id', $vendor_id)->first();
         $getfooterfeatures = Footerfeatures::where('vendor_id', $vendor_id)->get();
         $getsociallinks = SocialLinks::where('vendor_id', $vendor_id)->get();
         $landingdata = LandingSettings::where('vendor_id', $vendor_id)->first();
         $funfacts = FunFact::where('vendor_id', $vendor_id)->get();
-        return view('admin.landing.index', compact('settingdata', 'othersettingdata', 'theme', 'app', 'getfooterfeatures', 'landingdata', 'funfacts', 'getsociallinks'));
+        return view('admin.landing.index', compact('settingdata', 'othersettingdata', 'theme', 'currentPlan', 'app', 'getfooterfeatures', 'landingdata', 'funfacts', 'getsociallinks'));
     }
     public function theme_settings(Request $request)
     {
