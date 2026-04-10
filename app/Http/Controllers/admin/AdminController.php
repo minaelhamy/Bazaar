@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use App\Helpers\helper;
 use App\Models\OrderDetails;
@@ -183,9 +184,11 @@ class AdminController extends Controller
 
         $remember_me = $request->has('remember_me') ? true : false;
         $login = trim((string) $request->login);
-        $user = User::where('email', $login)
-            ->orWhere('username', $login)
-            ->first();
+        $userQuery = User::where('email', $login);
+        if (Schema::hasColumn('users', 'username')) {
+            $userQuery->orWhere('username', $login);
+        }
+        $user = $userQuery->first();
 
         session()->put('admin_login', 1);
         if (
