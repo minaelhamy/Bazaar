@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (!Schema::hasColumn('users', 'username')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('username')->nullable()->unique()->after('name');
+                $table->string('username', 191)->nullable()->unique()->after('name');
             });
         }
     }

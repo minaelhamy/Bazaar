@@ -1844,6 +1844,29 @@ class helper
         return $check;
     }
 
+    public static function availablePlanThemes($directoryPrefix = 'theme-')
+    {
+        $themes = [];
+
+        foreach (File::directories(resource_path('views/front')) as $directory) {
+            $name = basename($directory);
+            if (preg_match('/^' . preg_quote($directoryPrefix, '/') . '(\d+)$/', $name, $matches)) {
+                $themes[] = (string) ((int) $matches[1]);
+            }
+        }
+
+        if (empty($themes)) {
+            foreach (self::checkthemeaddons('theme_') as $themeAddon) {
+                $themes[] = str_replace('theme_', '', $themeAddon->unique_identifier);
+            }
+        }
+
+        $themes = array_values(array_unique($themes));
+        sort($themes, SORT_NATURAL);
+
+        return $themes;
+    }
+
     public static function getcartcount($session_id)
     {
         if (Auth::user()->type == 4) {

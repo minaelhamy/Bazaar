@@ -418,24 +418,27 @@
                                     @if (env('Environment') == 'sendbox')
                                         <span class="badge badge bg-danger ms-2">{{ trans('labels.addon') }}</span>
                                     @endif
-                                    @php $planthemes = explode('|', $editplan->themes_id); @endphp
                                     @php
-                                        $checktheme = @helper::checkthemeaddons('theme_');
-                                        $themes = [];
-                                        foreach ($checktheme as $ttlthemes) {
-                                            array_push(
-                                                $themes,
-                                                str_replace('theme_', '', $ttlthemes->unique_identifier),
-                                            );
-                                        }
+                                        $themes = @helper::availablePlanThemes('template-');
+                                        $selectedThemes = collect(old('themecheckbox', explode('|', $editplan->themes_id)))
+                                            ->map(fn($theme) => (string) $theme)
+                                            ->all();
                                     @endphp
+                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                        <button type="button" class="btn btn-sm btn-outline-primary js-select-all-themes">
+                                            Select all themes
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary js-clear-all-themes">
+                                            Clear all
+                                        </button>
+                                    </div>
                                     <ul class="theme-selection row row-cols-xl-6 row-cols-lg-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-2">
-                                        @foreach ($themes as $key => $item)
+                                        @foreach ($themes as $item)
                                         <div class="col">
                                             <li class="m-0 w-100">
-                                                <input type="checkbox" name="themecheckbox[]"
+                                                <input type="checkbox" class="js-theme-checkbox" name="themecheckbox[]"
                                                     id="template{{ $item }}" value="{{ $item }}"
-                                                    {{ in_array($item, $planthemes) ? 'checked' : '' }}>
+                                                    {{ in_array((string) $item, $selectedThemes, true) ? 'checked' : '' }}>
                                                 <label for="template{{ $item }}">
                                                     <img src="{{ helper::image_path('theme-' . $item . '.png') }}">
                                                 </label>
@@ -467,6 +470,22 @@
                 toastr.error("{{ $error }}");
             @endforeach
         @endif
+
+        document.querySelectorAll('.js-select-all-themes').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.js-theme-checkbox').forEach((checkbox) => {
+                    checkbox.checked = true;
+                });
+            });
+        });
+
+        document.querySelectorAll('.js-clear-all-themes').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.js-theme-checkbox').forEach((checkbox) => {
+                    checkbox.checked = false;
+                });
+            });
+        });
     </script>
     <script src="{{ url(env('ASSETPATHURL') . 'admin-assets/js/plan.js') }}"></script>
 @endsection
