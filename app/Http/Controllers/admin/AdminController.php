@@ -11,6 +11,7 @@ use App\Models\PricingPlan;
 use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use App\Helpers\helper;
@@ -173,18 +174,27 @@ class AdminController extends Controller
     public function check_admin_login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required|string',
             'password' => 'required',
         ], [
-            'email.required' => trans('messages.email_required'),
-            'email.email' => trans('messages.invalid_email'),
+            'login.required' => trans('messages.email_required'),
             'password.required' => trans('messages.password_required'),
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
+        $login = trim((string) $request->login);
+        $user = User::where('email', $login)
+            ->orWhere('username', $login)
+            ->first();
 
         session()->put('admin_login', 1);
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'type' => [1, 2, 4], 'is_deleted' => 2], $remember_me)) {
+        if (
+            !empty($user) &&
+            in_array((int) $user->type, [1, 2, 4], true) &&
+            (int) $user->is_deleted === 2 &&
+            Hash::check($request->password, (string) $user->password)
+        ) {
+            Auth::login($user, $remember_me);
 
             if (Auth::user()->type == 1) {
                 return redirect('/admin/dashboard');

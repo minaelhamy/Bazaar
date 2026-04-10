@@ -917,7 +917,7 @@ class helper
         return $firebaseresult;
     }
 
-    public static function vendor_register($vendor_name, $vendor_email, $vendor_mobile, $vendor_password, $firebasetoken, $slug, $google_id, $facebook_id, $country_id, $city_id, $store, $product_type)
+    public static function vendor_register($vendor_name, $vendor_email, $vendor_mobile, $vendor_password, $firebasetoken, $slug, $google_id, $facebook_id, $country_id, $city_id, $store, $product_type, $username = null)
     {
         try {
             if (!empty($slug)) {
@@ -950,10 +950,27 @@ class helper
                 $product_type = 1;
             }
 
+            $username = trim((string) $username);
+            if ($username === '') {
+                $usernameBase = $slug ?: ($vendor_email ? strstr($vendor_email, '@', true) : Str::slug($vendor_name, ''));
+                $username = preg_replace('/[^A-Za-z0-9_]/', '', (string) $usernameBase);
+                if ($username === '') {
+                    $username = 'founder';
+                }
+            }
+
+            $originalUsername = $username;
+            $suffix = 1;
+            while (User::where('username', $username)->exists()) {
+                $username = $originalUsername . $suffix;
+                $suffix++;
+            }
+
             $user = new User;
             $landingsettings = LandingSettings::where('vendor_id', 1)->first();
 
             $user->name = $vendor_name;
+            $user->username = $username;
             $user->email = $vendor_email;
             $user->password = $vendor_password;
             $user->google_id = $google_id;
