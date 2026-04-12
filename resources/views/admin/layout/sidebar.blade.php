@@ -1,11 +1,19 @@
 <!-- For Large Devices -->
 <nav class="sidebar sidebar-lg">
+    @php
+        $sidebarVendorName = null;
+        if (Auth::user()->type == 4) {
+            $sidebarVendorName = optional(App\Models\User::find(Auth::user()->vendor_id))->name;
+        } elseif (Auth::user()->type == 2) {
+            $sidebarVendorName = Auth::user()->name;
+        }
+    @endphp
     <div class="d-flex justify-content-center align-items-center mb-3 border-bottom border-white">
         <div class="navbar-header-logoc pb-2">
             @if (Auth::user()->type == 1)
                 <a href="" class="text-white fs-4">{{ trans('labels.admin_title') }}</a>
             @elseif(Auth::user()->type == 2 || Auth::user()->type == 4)
-                <a href="" class="text-white fs-4">{{ trans('labels.vendor_title') }}</a>
+                <a href="" class="text-white fs-4">{{ $sidebarVendorName }}</a>
             @endif
         </div>
     </div>
@@ -18,7 +26,7 @@
             @if (Auth::user()->type == 1)
                 <a href="" class="text-white fs-4">{{ trans('labels.admin_title') }}</a>
             @elseif(Auth::user()->type == 2 || Auth::user()->type == 4)
-                <a href="" class="text-white fs-4">{{ trans('labels.vendor_title') }}</a>
+                <a href="" class="text-white fs-4">{{ $sidebarVendorName }}</a>
             @endif
         </div>
         <button class="btn text-white" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarcollapse"

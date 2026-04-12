@@ -16,17 +16,6 @@
         </a>
     </li>
 
-    @if (Auth::user()->type == 1 || (Auth::user()->type == 4 && Auth::user()->vendor_id == 1))
-        <li
-            class="nav-item mb-2 fs-7 {{ helper::check_menu($role_id, 'role_addons_manager') == 1 ? 'd-block' : 'd-none' }}">
-            <a class="nav-link rounded d-flex {{ request()->is('admin/apps*') ? 'active' : '' }}"
-                href="{{ URL::to('/admin/apps') }}" aria-expanded="false">
-                <i class="fa fa-puzzle-piece"></i>
-                <span class="nav-text d-flex justify-content-between w-100">{{ trans('labels.addons_manager') }}</span>
-                <span class="rainbowText float-right mr-1 mt-1">Premium</span>
-            </a>
-        </li>
-    @endif
     @if (Auth::user()->type == 2 || (Auth::user()->type == 4 && Auth::user()->vendor_id != 1))
         <li
             class="nav-item mt-3 {{ helper::check_menu($role_id, 'role_orders') == 1 || helper::check_menu($role_id, 'role_report') == 1 || helper::check_menu($role_id, 'role_pos') == 1 ? 'd-block' : 'd-none' }}">
