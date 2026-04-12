@@ -1,16 +1,14 @@
 html,
 body {
-    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Circular Std", "SF Pro Display", "Avenir Next", "Montserrat", "Segoe UI", sans-serif;
     background: #f5efe7;
     color: #171412;
 }
 
 :root {
-    --bs-primary: #111111;
-    --bs-secondary: #c9bba6;
-    --hatchers-ink: #111111;
-    --hatchers-sand: #c9bba6;
-    --hatchers-sand-deep: #b8a68d;
+    --hatchers-ink: var(--bs-primary);
+    --hatchers-sand: var(--bs-secondary);
+    --hatchers-sand-deep: color-mix(in srgb, var(--bs-secondary), #000 12%);
     --hatchers-canvas: #f5efe7;
     --hatchers-surface: #fffdf9;
     --hatchers-surface-strong: #ffffff;
@@ -36,7 +34,7 @@ body {
 .page-topbar {
     background: rgba(255, 253, 249, 0.9);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(201, 187, 166, 0.55);
+    border-bottom: 1px solid color-mix(in srgb, var(--hatchers-sand), transparent 45%);
     box-shadow: 0 8px 30px rgba(17, 17, 17, 0.05);
 }
 
@@ -48,17 +46,19 @@ body {
 
 .sidebar {
     background: linear-gradient(180deg, #151311 0%, #1f1b17 100%);
-    border-inline-end: 1px solid rgba(201, 187, 166, 0.14);
+    border-inline-end: 1px solid color-mix(in srgb, var(--hatchers-sand), transparent 86%);
     box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.02);
 }
 
 .sidebar .border-bottom,
 .sidebar-lg .border-bottom,
 .sidebar-md .border-bottom {
-    border-color: rgba(201, 187, 166, 0.18) !important;
+    border-color: color-mix(in srgb, var(--hatchers-sand), transparent 82%) !important;
 }
 
 .sidebar .nav-link,
+.sidebar .navbar-nav .nav-item .nav-link,
+.sidebar .navbar-nav .multimenu .active-main,
 .sidebar .multimenu-title,
 .sidebar h6,
 .sidebar .nav-text,
@@ -67,20 +67,36 @@ body {
     color: rgba(255, 251, 245, 0.84) !important;
 }
 
-.sidebar .nav-link.active,
 .sidebar .nav-link:hover,
 .sidebar .nav-link:focus,
 .sidebar .show > .nav-link,
-.sidebar .collapse .nav-link:hover {
-    background: linear-gradient(135deg, rgba(201, 187, 166, 0.22), rgba(201, 187, 166, 0.1));
+.sidebar .collapse .nav-link:hover,
+.sidebar .navbar-nav .nav-item .nav-link:hover,
+.sidebar .navbar-nav .nav-item .nav-link:focus,
+.sidebar .navbar-nav .multimenu .active-main:hover {
+    background: color-mix(in srgb, var(--hatchers-sand), transparent 92%) !important;
     color: #ffffff !important;
-    border: 1px solid rgba(201, 187, 166, 0.25);
+    border-color: color-mix(in srgb, var(--hatchers-sand), transparent 84%) !important;
+    box-shadow: none !important;
 }
 
 .sidebar .nav-link {
     border: 1px solid transparent;
     border-radius: 14px !important;
     transition: all 0.18s ease;
+}
+
+.sidebar .nav-link.active {
+    font-weight: 700;
+}
+
+.sidebar .nav-link.active,
+.sidebar .navbar-nav .nav-item .nav-link.active,
+.sidebar .navbar-nav .multimenu .active-main {
+    background: transparent !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: inset 3px 0 0 var(--hatchers-sand) !important;
 }
 
 .sidebar h6 {
@@ -145,24 +161,24 @@ body {
 
 .btn-primary,
 .bg-primary {
-    background: var(--hatchers-ink) !important;
-    border-color: var(--hatchers-ink) !important;
+    background: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
     color: #fff !important;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {
-    background: #000 !important;
-    border-color: #000 !important;
+    background: color-mix(in srgb, var(--bs-primary), #000 10%) !important;
+    border-color: color-mix(in srgb, var(--bs-primary), #000 10%) !important;
 }
 
 .btn-secondary,
 .header-btn-icon,
 .lag-btn .btn,
 .lag-btn2 .btn {
-    background: var(--hatchers-sand) !important;
-    border-color: var(--hatchers-sand) !important;
+    background: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important;
     color: var(--hatchers-ink) !important;
 }
 
@@ -193,7 +209,7 @@ body {
 .select2-container--focus .select2-selection,
 .select2-container--open .select2-selection {
     border-color: var(--hatchers-sand-deep) !important;
-    box-shadow: 0 0 0 0.2rem rgba(201, 187, 166, 0.22) !important;
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--bs-secondary), transparent 78%) !important;
 }
 
 .table,
@@ -202,7 +218,7 @@ body {
 table.dataTable thead th,
 table.dataTable tbody td {
     color: var(--hatchers-text) !important;
-    border-color: rgba(201, 187, 166, 0.28) !important;
+    border-color: color-mix(in srgb, var(--hatchers-sand), transparent 72%) !important;
 }
 
 .table thead,
@@ -225,9 +241,9 @@ table.dataTable thead th {
 
 .list-options .list-group-item.active,
 .list-options .list-group-item:hover {
-    background: linear-gradient(135deg, #161311, #302822) !important;
+    background: var(--hatchers-ink) !important;
     color: #fff !important;
-    border-color: #161311 !important;
+    border-color: var(--hatchers-ink) !important;
 }
 
 .theme-selection label,
@@ -251,7 +267,7 @@ table.dataTable thead th {
 
 .theme-selection input:checked + label {
     border-color: var(--hatchers-ink);
-    box-shadow: 0 0 0 3px rgba(201, 187, 166, 0.32);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bs-secondary), transparent 68%);
 }
 
 .dropdown-item:hover,

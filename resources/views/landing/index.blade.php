@@ -11,13 +11,9 @@
                         <p class="pt-4 px-2 mx-auto">{{ trans('landing.hero_banner_description') }}</p>
 
                         <div class="mt-5 d-flex flex-wrap justify-content-center align-items-center gap-3">
-                            <a href="@if (env('Environment') == 'sendbox') {{ URL::to('/admin') }} @else {{ helper::appdata('')->vendor_register == 1 ? URL::to('/admin/register') : URL::to('/admin') }} @endif"
+                            <a href="{{ URL::to('/admin') }}"
                                 class="btn-secondary rounded-2 fs-7 m-0 fw-500" target="_blank">
                                 {{ trans('landing.get_started') }}
-                            </a>
-                            <a href="{{ URL::to('/#pricing-plans') }}"
-                                class="btn-light fs-7 m-0 fw-500 border-white rounded-2">
-                                {{ trans('labels.buy_now') }}
                             </a>
                             @if (env('Environment') == 'sendbox')
                                 <div class="dropdown">
@@ -76,17 +72,10 @@
                                     <div
                                         class="row g-3 {{ session()->get('direction') == 2 ? 'justify-content-end' : 'justify-content-end' }} ">
                                         <div class="col-6 col-sm-auto">
-                                            <a href="@if (env('Environment') == 'sendbox') {{ URL::to('/admin') }} @else {{ helper::appdata('')->vendor_register == 1 ? URL::to('/admin/register') : URL::to('/admin') }} @endif"
+                                            <a href="{{ URL::to('/admin') }}"
                                                 class="btn-secondary text-center w-100 fs-7 m-0 btn-class rounded-2"
                                                 target="_blank">
                                                 {{ trans('landing.get_started') }}
-                                            </a>
-                                        </div>
-                                        <div class="col-6 col-sm-auto">
-                                            <a href="{{ URL::to('/admin') }}"
-                                                class="btn-border-dark text-center fs-7 w-100 m-0 rounded-2"
-                                                target="_blank">
-                                                {{ trans('labels.buy_now') }}
                                             </a>
                                         </div>
                                     </div>
@@ -207,12 +196,6 @@
                     <a href="{{ URL::to('/admin') }}" class="btn-secondary rounded-2 fs-7" target="_blank">
                         {{ trans('landing.get_started') }}
                     </a>
-                    @if (count($planlist) > 0)
-                        <a href="{{ URL::to('/#pricing-plans') }}"
-                            class="btn-border-dark rounded-2 fs-7">
-                            {{ trans('labels.buy_now') }}
-                        </a>
-                    @endif
                 </div>
             </div>
         </div>
