@@ -30,6 +30,7 @@ use App\Http\Controllers\admin\FeaturesController;
 use App\Http\Controllers\admin\TimeController;
 use App\Http\Controllers\admin\TaxController;
 use App\Http\Controllers\admin\WhoWeAreController;
+use App\Http\Controllers\Integration\AtlasAssistantController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\UserController as WebUserController;
 use App\Http\Controllers\web\WalletController;
@@ -79,6 +80,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('admin_back', [VendorController::class, 'admin_back']);
         Route::get('logout', [AdminController::class, 'logout']);
         Route::get('dashboard', [AdminController::class, 'index']);
+        Route::post('atlas-assistant/chat', [AtlasAssistantController::class, 'chat']);
         // SETTINGS
         Route::get('settings', [SettingsController::class, 'settings_index']);
         Route::post('settings/update', [SettingsController::class, 'settings_update']);
