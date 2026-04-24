@@ -31,6 +31,7 @@ use App\Http\Controllers\admin\TimeController;
 use App\Http\Controllers\admin\TaxController;
 use App\Http\Controllers\admin\WhoWeAreController;
 use App\Http\Controllers\Integration\AtlasAssistantController;
+use App\Http\Controllers\Integration\HatchersLaunchController;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\UserController as WebUserController;
 use App\Http\Controllers\web\WalletController;
@@ -60,6 +61,7 @@ Route::post('/generate-image', [SEOController::class, 'generateImage']);
 
 
 Route::post('add-on/session/save', [AdminController::class, 'sessionsave']);
+Route::get('hatchers/launch', HatchersLaunchController::class);
 Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'login']);
     Route::post('checklogin-{logintype}', [AdminController::class, 'check_admin_login']);

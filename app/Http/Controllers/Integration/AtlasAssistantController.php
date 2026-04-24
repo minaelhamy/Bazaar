@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\PricingPlan;
 use App\Models\Settings;
 use App\Models\User;
+use App\Services\HatchersOsSnapshotService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,10 @@ use Throwable;
 
 class AtlasAssistantController extends Controller
 {
+    public function __construct(private HatchersOsSnapshotService $snapshotService)
+    {
+    }
+
     public function chat(Request $request): JsonResponse
     {
         $message = trim((string) $request->input('message'));
@@ -43,6 +48,8 @@ class AtlasAssistantController extends Controller
                 'error' => 'Founder account was not found.',
             ], 404);
         }
+
+        $this->snapshotService->syncFounder($founder, 'atlas_assistant_chat');
 
         $secret = trim((string) env('WEBSITE_PLATFORM_SHARED_SECRET'));
         if ($secret === '') {

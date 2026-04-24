@@ -17,9 +17,14 @@ use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use App\Helpers\helper;
 use App\Models\OrderDetails;
+use App\Services\HatchersOsSnapshotService;
 
 class AdminController extends Controller
 {
+    public function __construct(private HatchersOsSnapshotService $snapshotService)
+    {
+    }
+
     public function index(Request $request)
     {
         if (Auth::user()->type == 4) {
@@ -116,6 +121,7 @@ class AdminController extends Controller
         } else {
             if (Auth::user()->type == 4) {
                 if (helper::check_access('role_dashboard', Auth::user()->role_id, Auth::user()->vendor_id, 'manage') == 1) {
+                    $this->snapshotService->syncFounder($user, 'vendor_dashboard');
                     return view(
                         'admin.dashboard.index',
                         compact(
@@ -141,6 +147,9 @@ class AdminController extends Controller
                     return view('admin.dashboard.access_denied');
                 }
             } else {
+                if ((int) Auth::user()->type === 2) {
+                    $this->snapshotService->syncFounder($user, 'vendor_dashboard');
+                }
                 return view(
                     'admin.dashboard.index',
                     compact(

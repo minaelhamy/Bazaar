@@ -19,6 +19,7 @@ use App\Http\Controllers\addons\MercadoPagoController;
 use App\Http\Controllers\addons\ToyyibpayController;
 use App\Http\Controllers\addons\MyFatoorahController;
 use App\Http\Controllers\Integration\HatchersFounderSyncController;
+use App\Http\Controllers\Integration\HatchersActionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('hatchers/founder-sync', HatchersFounderSyncController::class);
+Route::post('hatchers/action', HatchersActionController::class);
 
 
 Route::group(['namespace'=>'Api'],function (){

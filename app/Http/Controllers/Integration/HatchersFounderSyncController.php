@@ -6,12 +6,17 @@ use App\Helpers\helper;
 use App\Http\Controllers\Controller;
 use App\Models\StoreCategory;
 use App\Models\User;
+use App\Services\HatchersOsSnapshotService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class HatchersFounderSyncController extends Controller
 {
+    public function __construct(private HatchersOsSnapshotService $snapshotService)
+    {
+    }
+
     public function __invoke(Request $request)
     {
         if (!Schema::hasColumn('users', 'username')) {
@@ -97,6 +102,8 @@ class HatchersFounderSyncController extends Controller
         }
 
         $user->save();
+
+        $this->snapshotService->syncFounder($user, 'founder_access_provisioned');
 
         return response()->json([
             'success' => true,
