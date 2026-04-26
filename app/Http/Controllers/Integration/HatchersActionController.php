@@ -539,6 +539,9 @@ class HatchersActionController extends Controller
             ->first();
         $deliveryCharge = (float) ($shipping->delivery_charge ?? 0);
         $grandTotal = $subTotal + $deliveryCharge;
+        $paymentType = trim((string) ($payload['payment_type'] ?? '1'));
+        $paymentStatus = trim((string) ($payload['payment_status'] ?? 'unpaid')) === 'paid' ? 2 : 1;
+        $paymentId = trim((string) ($payload['payment_id'] ?? ''));
 
         $defaultStatus = CustomStatus::query()
             ->where('vendor_id', $vendorId)
@@ -555,8 +558,8 @@ class HatchersActionController extends Controller
         $order->order_number_start = (int) ($appData->order_number_start ?? 1001);
         $order->vendor_id = $vendorId;
         $order->user_id = null;
-        $order->payment_type = 1;
-        $order->payment_status = 1;
+        $order->payment_type = $paymentType !== '' ? $paymentType : 1;
+        $order->payment_status = $paymentStatus;
         $order->sub_total = $subTotal;
         $order->tax = '';
         $order->tax_name = '';
@@ -579,6 +582,9 @@ class HatchersActionController extends Controller
         $order->customer_email = $customerEmail;
         $order->mobile = $customerMobile;
         $order->order_notes = trim((string) ($payload['notes'] ?? $payload['description'] ?? 'Public website order request from Hatchers OS.'));
+        if ($paymentId !== '') {
+            $order->transaction_id = $paymentId;
+        }
         $order->save();
 
         $orderDetail = new OrderDetails();

@@ -60,6 +60,7 @@ class HatchersOsSnapshotService
                 'grand_total',
                 'status_type',
                 'payment_status',
+                'transaction_id',
                 'vendor_note',
                 'created_at',
             ])
@@ -84,6 +85,7 @@ class HatchersOsSnapshotService
                 'grand_total' => (float) ($order->grand_total ?? 0),
                 'status' => $this->formatWorkflowStatus((int) ($order->status_type ?? 1)),
                 'payment_status' => ((int) ($order->payment_status ?? 1)) === 2 ? 'paid' : 'unpaid',
+                'transaction_id' => (string) ($order->transaction_id ?? ''),
                 'vendor_note' => (string) ($order->vendor_note ?? ''),
                 'line_items' => OrderDetails::where('order_id', $order->id)
                     ->limit(12)
