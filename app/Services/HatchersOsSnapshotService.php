@@ -224,6 +224,7 @@ class HatchersOsSnapshotService
         $body = [
             'email' => $user->email,
             'username' => $user->username,
+            'slug' => $user->slug,
             'updated_at' => now()->toIso8601String(),
             'readiness_score' => $readinessScore,
             'current_page' => $currentPage ?: ($storeReady ? 'store_dashboard' : 'store_setup'),
