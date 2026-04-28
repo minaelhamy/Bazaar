@@ -124,10 +124,6 @@
 
                         </a>
 
-                        <a href="javascript:void(0)" onclick="statusupdate('{{ URL::to('/admin/logout') }}')"
-                            class="dropdown-item d-flex align-items-center gap-2 p-2">
-                            <i class="fa-light fa-right-from-bracket fs-6"></i>{{ trans('labels.logout') }}
-                        </a>
                     </div>
                 </div>
             </div>
