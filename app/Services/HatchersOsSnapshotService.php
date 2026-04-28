@@ -16,6 +16,7 @@ use App\Models\Tax;
 use App\Models\User;
 use App\Models\Variants;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 
 class HatchersOsSnapshotService
 {
@@ -39,7 +40,7 @@ class HatchersOsSnapshotService
         $recentOrders = Order::where('vendor_id', $founderId)
             ->latest('id')
             ->limit(8)
-            ->get([
+            ->get(array_values(array_filter([
                 'order_number',
                 'customer_name',
                 'customer_email',
@@ -60,10 +61,10 @@ class HatchersOsSnapshotService
                 'grand_total',
                 'status_type',
                 'payment_status',
-                'transaction_id',
+                Schema::hasColumn('orders', 'transaction_id') ? 'transaction_id' : null,
                 'vendor_note',
                 'created_at',
-            ])
+            ])))
             ->map(fn (Order $order) => [
                 'sub_total' => (float) ($order->sub_total ?? 0),
                 'discount_amount' => (float) ($order->discount_amount ?? 0),
