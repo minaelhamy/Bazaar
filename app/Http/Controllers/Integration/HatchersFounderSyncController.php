@@ -116,6 +116,7 @@ class HatchersFounderSyncController extends Controller
         $user->email = $email !== '' ? $email : null;
         $user->mobile = trim((string) ($payload['phone'] ?? ''));
         $user->type = 2;
+        $user->allow_without_subscription = 1;
         $user->is_available = 1;
         $user->is_deleted = 2;
         $user->is_verified = 2;
