@@ -68,6 +68,9 @@ class HatchersFounderSyncController extends Controller
                 ->where('is_deleted', 2)
                 ->orderBy('reorder_id')
                 ->value('id');
+            if (empty($storeId)) {
+                $storeId = StoreCategory::orderBy('reorder_id')->value('id');
+            }
 
             $userId = helper::vendor_register(
                 $name !== '' ? $name : $username,
@@ -85,7 +88,27 @@ class HatchersFounderSyncController extends Controller
                 $username
             );
 
-            $user = User::find($userId);
+            if ($userId instanceof \Throwable) {
+                $user = $this->findUser($payload);
+                if (empty($user)) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Bazaar founder bootstrap failed: ' . $userId->getMessage(),
+                    ], 500);
+                }
+            } else {
+                $user = User::find($userId);
+                if (empty($user)) {
+                    $user = $this->findUser($payload);
+                }
+            }
+        }
+
+        if (empty($user)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Bazaar founder account could not be provisioned.',
+            ], 500);
         }
 
         $user->name = $name !== '' ? $name : $username;
