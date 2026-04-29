@@ -42,7 +42,7 @@ class HatchersActionController extends Controller
 
     public function __invoke(Request $request)
     {
-        $sharedSecret = trim((string) env('WEBSITE_PLATFORM_SHARED_SECRET', env('HATCHERS_SHARED_SECRET', '')));
+        $sharedSecret = trim((string) config('services.os.shared_secret', ''));
         if ($sharedSecret === '') {
             return response()->json(['success' => false, 'error' => 'WEBSITE_PLATFORM_SHARED_SECRET is not configured.'], 500);
         }

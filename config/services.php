@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'os' => [
+        'shared_secret' => env('WEBSITE_PLATFORM_SHARED_SECRET', env('HATCHERS_SHARED_SECRET', '')),
+    ],
 
     /*
     |--------------------------------------------------------------------------
