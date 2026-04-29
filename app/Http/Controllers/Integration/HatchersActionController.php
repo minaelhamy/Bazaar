@@ -10,20 +10,29 @@ use App\Models\Category;
 use App\Models\Coupons;
 use App\Models\CustomStatus;
 use App\Models\Extra;
+use App\Models\Faq;
+use App\Models\Features;
 use App\Models\Item;
+use App\Models\LandingSettings;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Privacypolicy;
 use App\Models\Settings;
 use App\Models\Shipping;
+use App\Models\SocialLinks;
 use App\Models\Terms;
 use App\Models\Tax;
+use App\Models\Testimonials;
 use App\Models\User;
+use App\Models\Banner;
 use App\Models\Variants;
+use App\Models\WhoWeAre;
 use App\Services\HatchersOsSnapshotService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 class HatchersActionController extends Controller
 {
@@ -150,7 +159,45 @@ class HatchersActionController extends Controller
         $websiteTitle = trim((string) ($payload['website_title'] ?? ''));
         $themeTemplate = trim((string) ($payload['theme_template'] ?? ''));
         $customDomain = trim((string) ($payload['custom_domain'] ?? ''));
-        if ($websiteTitle === '' && $themeTemplate === '' && $customDomain === '') {
+        $description = trim((string) ($payload['description'] ?? ''));
+        $metaTitle = trim((string) ($payload['meta_title'] ?? ''));
+        $metaDescription = trim((string) ($payload['meta_description'] ?? ''));
+        $contactEmail = trim((string) ($payload['contact_email'] ?? ''));
+        $contactPhone = trim((string) ($payload['contact_phone'] ?? ''));
+        $businessAddress = trim((string) ($payload['business_address'] ?? ''));
+        $whatsappNumber = trim((string) ($payload['whatsapp_number'] ?? ''));
+        $aboutContent = trim((string) ($payload['about_content'] ?? ''));
+        $faqItems = collect((array) ($payload['faq_items'] ?? []))->filter('is_array')->values();
+        $socialLinks = collect((array) ($payload['social_links'] ?? []))->filter('is_array')->values();
+        $featureItems = collect((array) ($payload['feature_items'] ?? []))->filter('is_array')->values();
+        $testimonials = collect((array) ($payload['testimonials'] ?? []))->filter('is_array')->values();
+        $storyItems = collect((array) ($payload['story_items'] ?? []))->filter('is_array')->values();
+        $storyTitle = trim((string) ($payload['story_title'] ?? ''));
+        $storySubtitle = trim((string) ($payload['story_subtitle'] ?? ''));
+        $storyDescription = trim((string) ($payload['story_description'] ?? ''));
+        $mediaAssets = collect((array) ($payload['media_assets'] ?? []))->filter('is_array')->values();
+        if (
+            $websiteTitle === '' &&
+            $themeTemplate === '' &&
+            $customDomain === '' &&
+            $description === '' &&
+            $metaTitle === '' &&
+            $metaDescription === '' &&
+            $contactEmail === '' &&
+            $contactPhone === '' &&
+            $businessAddress === '' &&
+            $whatsappNumber === '' &&
+            $aboutContent === '' &&
+            $faqItems->isEmpty() &&
+            $socialLinks->isEmpty() &&
+            $featureItems->isEmpty() &&
+            $testimonials->isEmpty() &&
+            $storyItems->isEmpty() &&
+            $storyTitle === '' &&
+            $storySubtitle === '' &&
+            $storyDescription === '' &&
+            $mediaAssets->isEmpty()
+        ) {
             return response()->json(['success' => false, 'error' => 'Website update needs a title, theme, or custom domain.'], 422);
         }
 
@@ -162,11 +209,164 @@ class HatchersActionController extends Controller
         if ($themeTemplate !== '') {
             $settings->template = $themeTemplate;
         }
+        if ($description !== '') {
+            $settings->description = $description;
+        }
+        if ($metaTitle !== '') {
+            $settings->meta_title = $metaTitle;
+        }
+        if ($metaDescription !== '') {
+            $settings->meta_description = $metaDescription;
+        }
+        if ($contactEmail !== '') {
+            $settings->email = $contactEmail;
+        }
+        if ($contactPhone !== '') {
+            $settings->contact = $contactPhone;
+        }
+        if ($businessAddress !== '') {
+            $settings->address = $businessAddress;
+        }
+        if ($whatsappNumber !== '') {
+            $settings->whatsapp_number = $whatsappNumber;
+        }
+        if ($storyTitle !== '') {
+            $settings->whoweare_title = $storyTitle;
+        }
+        if ($storySubtitle !== '') {
+            $settings->whoweare_subtitle = $storySubtitle;
+        }
+        if ($storyDescription !== '') {
+            $settings->whoweare_description = $storyDescription;
+        }
         $settings->save();
 
         if ($customDomain !== '') {
             $user->custom_domain = $customDomain;
             $user->save();
+        }
+
+        if ($aboutContent !== '') {
+            $about = About::firstOrNew(['vendor_id' => $vendorId]);
+            $about->vendor_id = $vendorId;
+            $about->about_content = $aboutContent;
+            $about->save();
+        }
+
+        foreach ($faqItems as $index => $faqItem) {
+            $question = trim((string) ($faqItem['question'] ?? ''));
+            $answer = trim((string) ($faqItem['answer'] ?? ''));
+            if ($question === '' || $answer === '') {
+                continue;
+            }
+
+            $faq = Faq::where('vendor_id', $vendorId)
+                ->whereRaw('LOWER(question) = ?', [Str::lower($question)])
+                ->first();
+
+            if (empty($faq)) {
+                $faq = new Faq();
+                $faq->vendor_id = $vendorId;
+            }
+
+            $faq->question = $question;
+            $faq->answer = $answer;
+            $faq->reorder_id = $index + 1;
+            $faq->save();
+        }
+
+        foreach ($socialLinks as $socialItem) {
+            $network = trim((string) ($socialItem['network'] ?? ''));
+            $url = trim((string) ($socialItem['url'] ?? ''));
+            if ($url === '') {
+                continue;
+            }
+
+            $icon = $this->socialIconMarkup($network, $url);
+            $social = SocialLinks::where('vendor_id', $vendorId)
+                ->where('link', $url)
+                ->first();
+
+            if (empty($social)) {
+                $social = new SocialLinks();
+                $social->vendor_id = $vendorId;
+            }
+
+            $social->icon = $icon;
+            $social->link = $url;
+            $social->save();
+        }
+
+        foreach ($featureItems as $featureItem) {
+            $title = trim((string) ($featureItem['title'] ?? ''));
+            $description = trim((string) ($featureItem['description'] ?? ''));
+            if ($title === '' || $description === '') {
+                continue;
+            }
+
+            $feature = Features::where('vendor_id', $vendorId)
+                ->whereRaw('LOWER(title) = ?', [Str::lower($title)])
+                ->first();
+
+            if (empty($feature)) {
+                $feature = new Features();
+                $feature->vendor_id = $vendorId;
+            }
+
+            $feature->title = $title;
+            $feature->description = $description;
+            $feature->icon = $feature->icon ?: '<i class="fa-solid fa-check"></i>';
+            $feature->save();
+        }
+
+        foreach ($testimonials as $testimonialItem) {
+            $name = trim((string) ($testimonialItem['name'] ?? ''));
+            $description = trim((string) ($testimonialItem['description'] ?? ''));
+            if ($name === '' || $description === '') {
+                continue;
+            }
+
+            $testimonial = Testimonials::where('vendor_id', $vendorId)
+                ->whereNull('item_id')
+                ->whereNull('user_id')
+                ->whereRaw('LOWER(name) = ?', [Str::lower($name)])
+                ->first();
+
+            if (empty($testimonial)) {
+                $testimonial = new Testimonials();
+                $testimonial->vendor_id = $vendorId;
+            }
+
+            $testimonial->name = $name;
+            $testimonial->position = trim((string) ($testimonialItem['position'] ?? 'Customer'));
+            $testimonial->description = $description;
+            $testimonial->star = max(1, min(5, (int) ($testimonialItem['star'] ?? 5)));
+            $testimonial->save();
+        }
+
+        foreach ($storyItems as $storyItem) {
+            $title = trim((string) ($storyItem['title'] ?? ''));
+            $description = trim((string) ($storyItem['description'] ?? ''));
+            if ($title === '' || $description === '') {
+                continue;
+            }
+
+            $who = WhoWeAre::where('vendor_id', $vendorId)
+                ->whereRaw('LOWER(title) = ?', [Str::lower($title)])
+                ->first();
+
+            if (empty($who)) {
+                $who = new WhoWeAre();
+                $who->vendor_id = $vendorId;
+            }
+
+            $who->title = $title;
+            $who->sub_title = $description;
+            $who->save();
+        }
+
+        if ($mediaAssets->isNotEmpty()) {
+            $this->applyWebsiteMedia($vendorId, $settings, $mediaAssets->all());
         }
 
         $this->snapshotService->syncFounder($user, 'store_setup');
@@ -1259,5 +1459,179 @@ class HatchersActionController extends Controller
         }
 
         return $slug;
+    }
+
+    private function socialIconMarkup(string $network, string $url): string
+    {
+        $value = Str::lower(trim($network));
+        $host = Str::lower((string) (parse_url($url, PHP_URL_HOST) ?? ''));
+        $signal = $value . ' ' . $host;
+
+        return match (true) {
+            str_contains($signal, 'instagram') => '<i class="fa-brands fa-instagram"></i>',
+            str_contains($signal, 'facebook') => '<i class="fa-brands fa-facebook-f"></i>',
+            str_contains($signal, 'linkedin') => '<i class="fa-brands fa-linkedin-in"></i>',
+            str_contains($signal, 'twitter'), str_contains($signal, 'x.com') => '<i class="fa-brands fa-x-twitter"></i>',
+            str_contains($signal, 'youtube') => '<i class="fa-brands fa-youtube"></i>',
+            str_contains($signal, 'tiktok') => '<i class="fa-brands fa-tiktok"></i>',
+            str_contains($signal, 'whatsapp') => '<i class="fa-brands fa-whatsapp"></i>',
+            default => '<i class="fa-solid fa-globe"></i>',
+        };
+    }
+
+    private function applyWebsiteMedia(int $vendorId, Settings $settings, array $mediaAssets): void
+    {
+        $landing = LandingSettings::firstOrNew(['vendor_id' => $vendorId]);
+        $landing->vendor_id = $vendorId;
+
+        $targets = collect($mediaAssets)
+            ->filter('is_array')
+            ->keyBy(fn (array $asset): string => trim((string) ($asset['target'] ?? '')));
+
+        if ($hero = $targets->get('hero')) {
+            $filename = $this->storeRemoteImage(
+                trim((string) ($hero['source_url'] ?? '')),
+                storage_path('app/public/admin-assets/images/banners/'),
+                'hero'
+            );
+            if ($filename) {
+                $this->replaceFileIfExists(storage_path('app/public/admin-assets/images/banners/' . (string) ($settings->home_banner ?? '')));
+                $settings->home_banner = $filename;
+            }
+        }
+
+        if ($landingHero = $targets->get('landing')) {
+            $filename = $this->storeRemoteImage(
+                trim((string) ($landingHero['source_url'] ?? '')),
+                storage_path('app/public/admin-assets/images/banners/'),
+                'landing'
+            );
+            if ($filename) {
+                $this->replaceFileIfExists(storage_path('app/public/admin-assets/images/banners/' . (string) ($landing->landing_home_banner ?? '')));
+                $landing->landing_home_banner = $filename;
+            }
+        }
+
+        if ($faq = $targets->get('faq')) {
+            $filename = $this->storeRemoteImage(
+                trim((string) ($faq['source_url'] ?? '')),
+                storage_path('app/public/admin-assets/images/index/'),
+                'faq'
+            );
+            if ($filename) {
+                $this->replaceFileIfExists(storage_path('app/public/admin-assets/images/index/' . (string) ($landing->faq_image ?? '')));
+                $landing->faq_image = $filename;
+            }
+        }
+
+        if ($story = $targets->get('story')) {
+            $filename = $this->storeRemoteImage(
+                trim((string) ($story['source_url'] ?? '')),
+                storage_path('app/public/admin-assets/images/index/'),
+                'whoweare'
+            );
+            if ($filename) {
+                $this->replaceFileIfExists(storage_path('app/public/admin-assets/images/index/' . (string) ($settings->whoweare_image ?? '')));
+                $settings->whoweare_image = $filename;
+            }
+        }
+
+        $this->syncBannerImage($vendorId, 0, $targets->get('hero'));
+        $this->syncBannerImage($vendorId, 1, $targets->get('section_two') ?? $targets->get('hero'));
+        $this->syncBannerImage($vendorId, 2, $targets->get('section_three') ?? $targets->get('faq') ?? $targets->get('hero'));
+
+        $landing->save();
+        $settings->save();
+    }
+
+    private function syncBannerImage(int $vendorId, int $section, ?array $asset): void
+    {
+        if (!is_array($asset)) {
+            return;
+        }
+
+        $filename = $this->storeRemoteImage(
+            trim((string) ($asset['source_url'] ?? '')),
+            storage_path('app/public/admin-assets/images/banners/'),
+            'section-' . $section
+        );
+
+        if (!$filename) {
+            return;
+        }
+
+        $banner = Banner::where('vendor_id', $vendorId)
+            ->where('section', $section)
+            ->orderBy('reorder_id')
+            ->orderBy('id')
+            ->first();
+
+        if (empty($banner)) {
+            $banner = new Banner();
+            $banner->vendor_id = $vendorId;
+            $banner->section = $section;
+            $banner->type = 1;
+            $banner->category_id = 0;
+            $banner->product_id = 0;
+            $banner->reorder_id = 1;
+            $banner->is_available = 1;
+        } else {
+            $this->replaceFileIfExists(storage_path('app/public/admin-assets/images/banners/' . (string) ($banner->banner_image ?? '')));
+        }
+
+        $banner->banner_image = $filename;
+        $banner->save();
+    }
+
+    private function storeRemoteImage(string $url, string $directory, string $prefix): ?string
+    {
+        if ($url === '') {
+            return null;
+        }
+
+        try {
+            $response = Http::timeout(20)->get($url);
+        } catch (\Throwable $exception) {
+            return null;
+        }
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        File::ensureDirectoryExists($directory);
+        $extension = $this->detectRemoteImageExtension($url, (string) $response->header('Content-Type', ''));
+        $filename = $prefix . '-' . uniqid() . '.' . $extension;
+        File::put(rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename, $response->body());
+
+        return $filename;
+    }
+
+    private function detectRemoteImageExtension(string $url, string $contentType): string
+    {
+        $contentType = strtolower(trim($contentType));
+        if (str_contains($contentType, 'png')) {
+            return 'png';
+        }
+        if (str_contains($contentType, 'webp')) {
+            return 'webp';
+        }
+        if (str_contains($contentType, 'gif')) {
+            return 'gif';
+        }
+
+        $path = parse_url($url, PHP_URL_PATH);
+        $extension = strtolower((string) pathinfo((string) $path, PATHINFO_EXTENSION));
+
+        return in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)
+            ? ($extension === 'jpeg' ? 'jpg' : $extension)
+            : 'jpg';
+    }
+
+    private function replaceFileIfExists(string $path): void
+    {
+        if ($path !== '' && File::exists($path)) {
+            @unlink($path);
+        }
     }
 }
