@@ -167,15 +167,15 @@ class HatchersActionController extends Controller
         $businessAddress = trim((string) ($payload['business_address'] ?? ''));
         $whatsappNumber = trim((string) ($payload['whatsapp_number'] ?? ''));
         $aboutContent = trim((string) ($payload['about_content'] ?? ''));
-        $faqItems = collect((array) ($payload['faq_items'] ?? []))->filter('is_array')->values();
-        $socialLinks = collect((array) ($payload['social_links'] ?? []))->filter('is_array')->values();
-        $featureItems = collect((array) ($payload['feature_items'] ?? []))->filter('is_array')->values();
-        $testimonials = collect((array) ($payload['testimonials'] ?? []))->filter('is_array')->values();
-        $storyItems = collect((array) ($payload['story_items'] ?? []))->filter('is_array')->values();
+        $faqItems = collect((array) ($payload['faq_items'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
+        $socialLinks = collect((array) ($payload['social_links'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
+        $featureItems = collect((array) ($payload['feature_items'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
+        $testimonials = collect((array) ($payload['testimonials'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
+        $storyItems = collect((array) ($payload['story_items'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
         $storyTitle = trim((string) ($payload['story_title'] ?? ''));
         $storySubtitle = trim((string) ($payload['story_subtitle'] ?? ''));
         $storyDescription = trim((string) ($payload['story_description'] ?? ''));
-        $mediaAssets = collect((array) ($payload['media_assets'] ?? []))->filter('is_array')->values();
+        $mediaAssets = collect((array) ($payload['media_assets'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
         if (
             $websiteTitle === '' &&
             $themeTemplate === '' &&
@@ -1485,7 +1485,7 @@ class HatchersActionController extends Controller
         $landing->vendor_id = $vendorId;
 
         $targets = collect($mediaAssets)
-            ->filter('is_array')
+            ->filter(fn ($asset): bool => is_array($asset))
             ->keyBy(fn (array $asset): string => trim((string) ($asset['target'] ?? '')));
 
         if ($hero = $targets->get('hero')) {
