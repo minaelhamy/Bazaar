@@ -21,6 +21,7 @@ use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\Blog;
 use App\Models\CustomDomain;
+use App\Models\StorefrontAlias;
 use App\Models\SocialLinks;
 use App\Models\CustomStatus;
 use App\Models\AppSettings;
@@ -119,7 +120,7 @@ class helper
         $slug = $slug ?: self::requestedVendorSlug();
 
         if (!empty($slug)) {
-            return User::where('slug', $slug)->first();
+            return self::resolveVendorBySlug($slug);
         }
 
         $host = self::currentHost();
@@ -251,8 +252,34 @@ class helper
     // front
     public static function vendor_data($slug)
     {
-        $vendordata = User::where('slug', $slug)->first();
-        return $vendordata;
+        return self::resolveVendorBySlug($slug);
+    }
+
+    private static function resolveVendorBySlug($slug)
+    {
+        $slug = trim((string) $slug);
+        if ($slug === '') {
+            return null;
+        }
+
+        $vendor = User::where('slug', $slug)->first();
+        if (!empty($vendor)) {
+            request()->attributes->remove('resolved_storefront_alias_slug');
+
+            return $vendor;
+        }
+
+        $alias = StorefrontAlias::where('slug', $slug)->first();
+        if (empty($alias)) {
+            return null;
+        }
+
+        $vendor = User::find($alias->vendor_id);
+        if (!empty($vendor)) {
+            request()->attributes->set('resolved_storefront_alias_slug', $slug);
+        }
+
+        return $vendor;
     }
     public static function telegramdata($vendor_id)
     {

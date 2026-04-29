@@ -20,6 +20,7 @@ use App\Models\Privacypolicy;
 use App\Models\Settings;
 use App\Models\Shipping;
 use App\Models\SocialLinks;
+use App\Models\StorefrontAlias;
 use App\Models\Terms;
 use App\Models\Tax;
 use App\Models\Testimonials;
@@ -157,6 +158,7 @@ class HatchersActionController extends Controller
     private function updateWebsite(User $user, int $vendorId, array $payload)
     {
         $websiteTitle = trim((string) ($payload['website_title'] ?? ''));
+        $websitePath = trim((string) ($payload['website_path'] ?? ''));
         $themeTemplate = trim((string) ($payload['theme_template'] ?? ''));
         $customDomain = trim((string) ($payload['custom_domain'] ?? ''));
         $description = trim((string) ($payload['description'] ?? ''));
@@ -178,6 +180,7 @@ class HatchersActionController extends Controller
         $mediaAssets = collect((array) ($payload['media_assets'] ?? []))->filter(fn ($item): bool => is_array($item))->values();
         if (
             $websiteTitle === '' &&
+            $websitePath === '' &&
             $themeTemplate === '' &&
             $customDomain === '' &&
             $description === '' &&
@@ -203,6 +206,12 @@ class HatchersActionController extends Controller
 
         $settings = Settings::firstOrNew(['vendor_id' => $vendorId]);
         $settings->vendor_id = $vendorId;
+        if ($websitePath !== '') {
+            $previousSlug = trim((string) $user->slug);
+            $user->slug = $this->uniqueStorefrontSlug($websitePath, (int) $user->id);
+            $user->save();
+            $this->storeLegacyStorefrontAlias($vendorId, $previousSlug, $user->slug);
+        }
         if ($websiteTitle !== '') {
             $settings->website_title = $websiteTitle;
         }
@@ -376,7 +385,7 @@ class HatchersActionController extends Controller
             'title' => $websiteTitle !== '' ? $websiteTitle : (string) ($settings->website_title ?? ''),
             'theme_template' => $themeTemplate !== '' ? $themeTemplate : (string) ($settings->template ?? ''),
             'custom_domain' => $customDomain,
-            'public_url' => helper::storefront_url($user),
+            'public_url' => helper::storefront_url($user->fresh()),
             'edit_url' => url('/admin/basic_settings'),
         ]);
     }
@@ -387,7 +396,7 @@ class HatchersActionController extends Controller
 
         return response()->json([
             'success' => true,
-            'public_url' => helper::storefront_url($user),
+            'public_url' => helper::storefront_url($user->fresh()),
             'edit_url' => url('/admin/dashboard'),
             'title' => 'Bazaar website published',
         ]);
@@ -1459,6 +1468,39 @@ class HatchersActionController extends Controller
         }
 
         return $slug;
+    }
+
+    private function uniqueStorefrontSlug(string $value, ?int $ignoreUserId = null): string
+    {
+        $base = Str::slug($value, '-');
+        $slug = $base !== '' ? $base : 'your-business';
+        $tries = 1;
+
+        while (
+            User::where('slug', $slug)
+                ->when($ignoreUserId !== null, fn ($query) => $query->where('id', '!=', $ignoreUserId))
+                ->exists()
+        ) {
+            $slug = ($base !== '' ? $base : 'your-business') . '-' . $tries;
+            $tries++;
+        }
+
+        return $slug;
+    }
+
+    private function storeLegacyStorefrontAlias(int $vendorId, string $legacySlug, string $currentSlug): void
+    {
+        $legacySlug = trim(strtolower($legacySlug), '/');
+        $currentSlug = trim(strtolower($currentSlug), '/');
+
+        if ($legacySlug === '' || $legacySlug === $currentSlug) {
+            return;
+        }
+
+        StorefrontAlias::updateOrCreate(
+            ['slug' => $legacySlug],
+            ['vendor_id' => $vendorId]
+        );
     }
 
     private function socialIconMarkup(string $network, string $url): string

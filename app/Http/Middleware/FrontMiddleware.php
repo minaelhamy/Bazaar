@@ -4,6 +4,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Helpers\helper;
+use Illuminate\Support\Str;
 class FrontMiddleware
 {
     /**
@@ -15,10 +16,24 @@ class FrontMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = helper::currentStoreUser(helper::requestedVendorSlug($request));
+        $requestedSlug = (string) (helper::requestedVendorSlug($request) ?? '');
+        $user = helper::currentStoreUser($requestedSlug);
 
         if (empty($user)) {
             abort(404);
+        }
+
+        $aliasSlug = (string) $request->attributes->get('resolved_storefront_alias_slug', '');
+        if ($aliasSlug !== '' && helper::isPlatformHost() && $aliasSlug !== $user->slug) {
+            $currentPath = trim($request->path(), '/');
+            $suffix = trim(Str::after($currentPath, trim($aliasSlug, '/')), '/');
+            $redirectUrl = helper::storefront_url($user, $suffix);
+
+            if ($request->getQueryString()) {
+                $redirectUrl .= '?' . $request->getQueryString();
+            }
+
+            return redirect()->to($redirectUrl, 301);
         }
 
         helper::language($user->id);
