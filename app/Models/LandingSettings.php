@@ -9,4 +9,5 @@ class LandingSettings extends Model
 {
     use HasFactory;
     protected $table = 'landing_settings';
+    protected $guarded = [];
 }
