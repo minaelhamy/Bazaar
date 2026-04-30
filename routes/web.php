@@ -32,6 +32,7 @@ use App\Http\Controllers\admin\TaxController;
 use App\Http\Controllers\admin\WhoWeAreController;
 use App\Http\Controllers\Integration\AtlasAssistantController;
 use App\Http\Controllers\Integration\HatchersLaunchController;
+use Illuminate\Support\Str;
 use App\Http\Controllers\web\HomeController;
 use App\Http\Controllers\web\UserController as WebUserController;
 use App\Http\Controllers\web\WalletController;
@@ -62,6 +63,26 @@ Route::post('/generate-image', [SEOController::class, 'generateImage']);
 
 Route::post('add-on/session/save', [AdminController::class, 'sessionsave']);
 Route::get('hatchers/launch', HatchersLaunchController::class);
+Route::get('/storage/{path}', function (string $path) {
+    $path = ltrim($path, '/');
+
+    if ($path === '' || Str::contains($path, ['../', '..\\'])) {
+        abort(404);
+    }
+
+    $publicPath = public_path('storage/' . $path);
+    if (is_file($publicPath)) {
+        return response()->file($publicPath);
+    }
+
+    $storagePath = storage_path('app/public/' . $path);
+    if (!is_file($storagePath)) {
+        abort(404);
+    }
+
+    return response()->file($storagePath);
+})->where('path', '.*');
+
 Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'login']);
     Route::post('checklogin-{logintype}', [AdminController::class, 'check_admin_login']);
