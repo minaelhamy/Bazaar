@@ -428,7 +428,7 @@ Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
                 Route::get('/bulk_delete', [BannerController::class, 'bulk_delete']);
             });
             Route::group(['prefix' => 'bannersection-2'], function () {
-                Route::get('/', [BannerController::class, 'index'])->name('banner');
+                Route::get('/', [BannerController::class, 'index'])->name('bannersection2');
                 Route::get('/add', [BannerController::class, 'add']);
                 Route::post('/store', [BannerController::class, 'store']);
                 Route::get('/edit-{id}', [BannerController::class, 'show']);
