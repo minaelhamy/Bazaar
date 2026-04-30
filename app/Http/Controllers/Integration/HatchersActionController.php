@@ -1812,6 +1812,7 @@ class HatchersActionController extends Controller
     private function websiteMediaDiagnosticMessage(array $payload): string
     {
         $providers = $this->websiteMediaProviderStatus();
+        $missingKeys = $this->websiteMediaMissingKeys();
         $providerSummary = collect($providers)
             ->map(fn (bool $available, string $provider): string => $provider . '=' . ($available ? 'on' : 'off'))
             ->implode(', ');
@@ -1823,7 +1824,14 @@ class HatchersActionController extends Controller
             ->take(4)
             ->implode(' | ');
 
-        return trim('Website media could not be prepared yet. Providers: ' . $providerSummary . '. Queries: ' . ($queries !== '' ? $queries : 'none generated') . '.');
+        $message = 'Website media could not be prepared yet. Providers: ' . $providerSummary . '.';
+        if ($missingKeys !== []) {
+            $message .= ' Missing keys: ' . implode(', ', $missingKeys) . '.';
+        }
+
+        $message .= ' Queries: ' . ($queries !== '' ? $queries : 'none generated') . '.';
+
+        return trim($message);
     }
 
     private function websiteMediaProviderStatus(): array
@@ -1834,6 +1842,23 @@ class HatchersActionController extends Controller
             'pexels' => trim((string) config('services.stock_media.pexels_api_key', '')) !== '',
             'pixabay' => trim((string) config('services.stock_media.pixabay_api_key', '')) !== '',
         ];
+    }
+
+    private function websiteMediaMissingKeys(): array
+    {
+        $missing = [];
+
+        if (trim((string) config('services.stock_media.unsplash_access_key', '')) === '') {
+            $missing[] = 'UNSPLASH_ACCESS_KEY';
+        }
+        if (trim((string) config('services.stock_media.pexels_api_key', '')) === '') {
+            $missing[] = 'PEXELS_API_KEY';
+        }
+        if (trim((string) config('services.stock_media.pixabay_api_key', '')) === '') {
+            $missing[] = 'PIXABAY_API_KEY';
+        }
+
+        return $missing;
     }
 
     private function searchUnsplashAssets(string $query): array
