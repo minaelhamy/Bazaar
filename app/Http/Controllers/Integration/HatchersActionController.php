@@ -34,6 +34,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class HatchersActionController extends Controller
 {
@@ -224,7 +225,16 @@ class HatchersActionController extends Controller
         }
 
         if ($this->websiteBuildRequiresMedia($payload) && $mediaAssets->isEmpty()) {
-            return response()->json(['success' => false, 'error' => 'Website media could not be prepared yet.'], 422);
+            $diagnostic = $this->websiteMediaDiagnosticMessage($payload);
+            Log::warning('Bazaar website media generation returned no assets.', [
+                'vendor_id' => $vendorId,
+                'website_title' => $websiteTitle,
+                'diagnostic' => $diagnostic,
+                'query_plan' => $this->websiteMediaQueryPlan($payload),
+                'providers' => $this->websiteMediaProviderStatus(),
+            ]);
+
+            return response()->json(['success' => false, 'error' => $diagnostic], 422);
         }
 
         $settings = Settings::firstOrNew(['vendor_id' => $vendorId]);
@@ -1796,6 +1806,33 @@ class HatchersActionController extends Controller
             'credit_name' => trim((string) ($asset['credit_name'] ?? '')),
             'credit_url' => trim((string) ($asset['credit_url'] ?? '')),
             'provider' => trim((string) ($asset['provider'] ?? 'wikimedia')),
+        ];
+    }
+
+    private function websiteMediaDiagnosticMessage(array $payload): string
+    {
+        $providers = $this->websiteMediaProviderStatus();
+        $providerSummary = collect($providers)
+            ->map(fn (bool $available, string $provider): string => $provider . '=' . ($available ? 'on' : 'off'))
+            ->implode(', ');
+
+        $queries = collect($this->websiteMediaQueryPlan($payload))
+            ->flatMap(fn (array $slot): array => $this->slotQueries($slot))
+            ->filter()
+            ->unique()
+            ->take(4)
+            ->implode(' | ');
+
+        return trim('Website media could not be prepared yet. Providers: ' . $providerSummary . '. Queries: ' . ($queries !== '' ? $queries : 'none generated') . '.');
+    }
+
+    private function websiteMediaProviderStatus(): array
+    {
+        return [
+            'wikimedia' => true,
+            'unsplash' => trim((string) config('services.stock_media.unsplash_access_key', '')) !== '',
+            'pexels' => trim((string) config('services.stock_media.pexels_api_key', '')) !== '',
+            'pixabay' => trim((string) config('services.stock_media.pixabay_api_key', '')) !== '',
         ];
     }
 
