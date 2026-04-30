@@ -71,11 +71,24 @@ class HatchersActionController extends Controller
         $operation = trim((string) ($payload['operation'] ?? 'create'));
 
         if ($category === 'website') {
-            return match ($operation) {
-                'update' => $this->updateWebsite($user, $vendorId, $payload),
-                'publish' => $this->publishWebsite($user),
-                default => response()->json(['success' => false, 'error' => 'Unsupported Bazaar website action.'], 422),
-            };
+            try {
+                return match ($operation) {
+                    'update' => $this->updateWebsite($user, $vendorId, $payload),
+                    'publish' => $this->publishWebsite($user),
+                    default => response()->json(['success' => false, 'error' => 'Unsupported Bazaar website action.'], 422),
+                };
+            } catch (\Throwable $exception) {
+                Log::error('Bazaar website action crashed.', [
+                    'vendor_id' => $vendorId,
+                    'operation' => $operation,
+                    'message' => $exception->getMessage(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Bazaar website action failed: ' . $exception->getMessage(),
+                ], 500);
+            }
         }
 
         if ($operation === 'update') {
