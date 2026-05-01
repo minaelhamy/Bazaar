@@ -65,6 +65,12 @@ Route::post('add-on/session/save', [AdminController::class, 'sessionsave']);
 Route::get('hatchers/launch', HatchersLaunchController::class);
 Route::get('/storage/{path}', function (string $path) {
     $path = ltrim($path, '/');
+    $headers = [
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Allow-Methods' => 'GET, OPTIONS',
+        'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept',
+        'Cross-Origin-Resource-Policy' => 'cross-origin',
+    ];
 
     if ($path === '' || Str::contains($path, ['../', '..\\'])) {
         abort(404);
@@ -72,7 +78,7 @@ Route::get('/storage/{path}', function (string $path) {
 
     $publicPath = public_path('storage/' . $path);
     if (is_file($publicPath)) {
-        return response()->file($publicPath);
+        return response()->file($publicPath, $headers);
     }
 
     $storagePath = storage_path('app/public/' . $path);
@@ -80,7 +86,7 @@ Route::get('/storage/{path}', function (string $path) {
         abort(404);
     }
 
-    return response()->file($storagePath);
+    return response()->file($storagePath, $headers);
 })->where('path', '.*');
 
 Route::group(['namespace' => 'admin', 'prefix' => 'admin'], function () {
