@@ -28,7 +28,7 @@
                     </a>
                 @endif
                 <!-- dekstop-tablet-mobile-language-dropdown-button-start-->
-                @if (@helper::checkaddons('language'))
+                @if (false && @helper::checkaddons('language'))
                     @if (helper::available_language('')->count() > 1)
                         <div class="position-relative">
                             <div class="lag-btn dropdown border-0 shadow-none login-lang">

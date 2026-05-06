@@ -71,7 +71,7 @@
                 </ul>
                 <div class="d-flex gap-3 align-items-center">
                     @if (helper::available_language('')->count() > 1)
-                        @if (@helper::checkaddons('language'))
+                        @if (false && @helper::checkaddons('language'))
                             <div class="lag-btn dropdown lag-btn rounded-2">
                                 <a class="p-0 border-0 rounded-1 language-drop" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -149,7 +149,7 @@
         </div>
         <div class=" d-flex gap-3 d-xl-none">
             @if (helper::available_language('')->count() > 1)
-                @if (@helper::checkaddons('language'))
+                @if (false && @helper::checkaddons('language'))
                     <div class="lag-btn dropdown lag-btn rounded-2">
                         <a class="p-0 border-0 rounded-1 language-drop" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">

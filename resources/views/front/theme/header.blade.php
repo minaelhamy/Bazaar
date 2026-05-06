@@ -693,7 +693,7 @@
                     @endphp
 
                     <ul class="d-flex align-items-center justify-content-end gap-lg-4 gap-3 m-0 p-0">
-                        @if (@helper::checkaddons('language'))
+                        @if (false && @helper::checkaddons('language'))
                             @if (count($languages) > 1)
                                 <li>
                                     <div class="dropdown language-dropdown lag-btn">
